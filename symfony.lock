@@ -74,6 +74,15 @@
     "doctrine/reflection": {
         "version": "v1.0.0"
     },
+    "easycorp/easy-log-handler": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "70062abc2cd58794d2a90274502f81b55cd9951b"
+        }
+    },
     "easyrdf/easyrdf": {
         "version": "0.9.1"
     },
@@ -103,6 +112,9 @@
     },
     "league/html-to-markdown": {
         "version": "4.6.2"
+    },
+    "monolog/monolog": {
+        "version": "1.24.0"
     },
     "nelmio/cors-bundle": {
         "version": "1.5",
@@ -170,6 +182,18 @@
     "symfony/debug": {
         "version": "v4.0.3"
     },
+    "symfony/debug-bundle": {
+        "version": "4.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.1",
+            "ref": "f8863cbad2f2e58c4b65fa1eac892ab189971bea"
+        }
+    },
+    "symfony/debug-pack": {
+        "version": "v1.0.7"
+    },
     "symfony/dependency-injection": {
         "version": "v4.0.3"
     },
@@ -217,6 +241,30 @@
     },
     "symfony/inflector": {
         "version": "v4.0.3"
+    },
+    "symfony/mercure": {
+        "version": "v0.1.0"
+    },
+    "symfony/mercure-bundle": {
+        "version": "0.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "0.1",
+            "ref": "c78ab1f56e700004fc5cd675c26b3c1c26be281d"
+        }
+    },
+    "symfony/monolog-bridge": {
+        "version": "v4.2.2"
+    },
+    "symfony/monolog-bundle": {
+        "version": "3.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "3.1",
+            "ref": "18ebf5a940573a20de06f9c4060101eeb438cf3d"
+        }
     },
     "symfony/options-resolver": {
         "version": "v4.0.3"
