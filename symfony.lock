@@ -254,6 +254,15 @@
             "ref": "c78ab1f56e700004fc5cd675c26b3c1c26be281d"
         }
     },
+    "symfony/messenger": {
+        "version": "4.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.1",
+            "ref": "f11dfa18618a8a5dd853ea3a302db2e0557e031c"
+        }
+    },
     "symfony/monolog-bridge": {
         "version": "v4.2.2"
     },
@@ -322,6 +331,9 @@
     },
     "symfony/serializer": {
         "version": "v4.0.3"
+    },
+    "symfony/serializer-pack": {
+        "version": "v1.0.2"
     },
     "symfony/stopwatch": {
         "version": "v4.0.3"

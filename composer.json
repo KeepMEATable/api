@@ -20,7 +20,9 @@
         "symfony/flex": "^1.1",
         "symfony/framework-bundle": "4.2.*",
         "symfony/mercure-bundle": "^0.1.0",
+        "symfony/messenger": "4.2.*",
         "symfony/security-bundle": "*",
+        "symfony/serializer-pack": "^1.0",
         "symfony/twig-bundle": "*",
         "symfony/validator": "*",
         "symfony/yaml": "4.2.*"

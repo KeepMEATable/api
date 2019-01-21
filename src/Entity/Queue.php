@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ApiResource(
  *     mercure=true,
+ *     messenger=true,
  *     collectionOperations={
  *          "get", "post"
  *     },
