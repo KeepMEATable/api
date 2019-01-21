@@ -8,5 +8,5 @@ framework:
             # Route your messages to the transports
             'Symfony\Component\Mercure\Update': amqp
             # does not work anymore with the next line...
-            'App\Entity\Queue': amqp
+            #'App\Entity\Queue': amqp
 
