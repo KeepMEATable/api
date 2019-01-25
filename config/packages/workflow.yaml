@@ -1,0 +1,23 @@
+framework:
+    workflows:
+        queue:
+            type: 'state_machine'
+            audit_trail:
+                enabled: true
+            supports:
+                - App\Entity\Queue
+            initial_place: started
+            places:
+                - started
+                - waiting
+                - ready
+            transitions:
+                wait:
+                    from: started
+                    to: waiting
+                ready:
+                    from: waiting
+                    to: ready
+                reset:
+                    from: [waiting, ready]
+                    to: started
