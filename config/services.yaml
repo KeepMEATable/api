@@ -32,3 +32,7 @@ services:
 
     App\Workflow\PathResolver\OperationPathResolver:
         decorates: 'api_platform.operation_path_resolver.generator'
+
+    App\Doctrine\Extensions\HolderFilter:
+        tags:
+            - {name: 'api_platform.doctrine.orm.query_extension.collection', priority: 9}

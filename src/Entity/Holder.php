@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -36,6 +38,16 @@ class Holder implements UserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Queue::class, mappedBy="holder")
+     */
+    private $waitingLines;
+
+    public function __construct()
+    {
+        $this->waitingLines = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -101,4 +113,30 @@ class Holder implements UserInterface
      * @see UserInterface
      */
     public function eraseCredentials(): void{}
+
+    /**
+     * @return Collection|Queue[]
+     */
+    public function getWaitingLines(): Collection
+    {
+        return $this->waitingLines;
+    }
+
+    public function addWaitingLine(Queue $waitingLine): void
+    {
+        if (!$this->waitingLines->contains($waitingLine)) {
+            $this->waitingLines[] = $waitingLine;
+            $waitingLine->setHolder($this);
+        }
+    }
+
+    public function removeWaitingLine(Queue $waitingLine): void
+    {
+        if ($this->waitingLines->contains($waitingLine)) {
+            $this->waitingLines->removeElement($waitingLine);
+            if ($waitingLine->getHolder() === $this) {
+                $waitingLine->setHolder(null);
+            }
+        }
+    }
 }

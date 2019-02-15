@@ -21,7 +21,6 @@
         "symfony/expression-language": "*",
         "symfony/flex": "^1.1",
         "symfony/framework-bundle": "4.2.*",
-        "symfony/maker-bundle": "^1.11",
         "symfony/mercure-bundle": "^0.1.0",
         "symfony/messenger": "4.2.*",
         "symfony/security-bundle": "*",
@@ -33,6 +32,7 @@
     },
     "require-dev": {
         "api-platform/schema-generator": "^2.1",
+        "symfony/maker-bundle": "^1.11",
         "symfony/profiler-pack": "^1.0"
     },
     "config": {

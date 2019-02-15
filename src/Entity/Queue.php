@@ -15,9 +15,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ApiResource(
  *     mercure=true,
  *     messenger=true,
- *     collectionOperations={"get", "post"},
+ *     collectionOperations={
+ *          "get",
+ *          "post"
+ *      },
  *     itemOperations={"get"},
  *     normalizationContext={"groups"={"Queue:read"}},
+ *     denormalizationContext={"groups"={"Queue:write"}},
  * )
  * @ApiFilter(BooleanFilter::class, properties={"waiting"})
  */
@@ -28,7 +32,7 @@ class Queue
     private const WORKFLOW_MARKING_READY = 'ready';
 
     /**
-     * @Groups("Queue:read")
+     * @Groups({"Queue:read", "Queue:write"})
      * @ORM\Column(type="string", length=36)
      * @ORM\Id
      */
@@ -48,6 +52,11 @@ class Queue
      * @ORM\Column(type="boolean", nullable=false,  options={"default": false})
      */
     public $ready = false;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Holder::class, inversedBy="waitingLines")
+     */
+    private $holder;
 
     public function getMarking(): string
     {
@@ -81,5 +90,15 @@ class Queue
             default:
                 throw new \LogicException(sprintf('The state %s is not supported.', $state));
         }
+    }
+
+    public function getHolder(): ?Holder
+    {
+        return $this->holder;
+    }
+
+    public function setHolder(?Holder $holder): void
+    {
+        $this->holder = $holder;
     }
 }
