@@ -23,7 +23,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     normalizationContext={"groups"={"Queue:read"}},
  *     denormalizationContext={"groups"={"Queue:write"}},
  * )
- * @ApiFilter(BooleanFilter::class, properties={"waiting"})
  */
 class Queue
 {
