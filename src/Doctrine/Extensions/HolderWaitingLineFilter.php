@@ -12,7 +12,7 @@ use App\Workflow\Exceptions\MissingUserException;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class HolderFilter implements QueryCollectionExtensionInterface
+class HolderWaitingLineFilter implements QueryCollectionExtensionInterface
 {
     private $tokenStorage;
 

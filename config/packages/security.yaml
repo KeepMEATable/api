@@ -1,9 +1,25 @@
 security:
     encoders:
+        Symfony\Component\Security\Core\User\User:
+            algorithm: '%env(IN_MEMORY_ENCODER)%'
         App\Entity\Holder:
             algorithm: argon2i
 
     providers:
+        chain_provider:
+            chain:
+                providers: [in_memory, app_user_provider]
+
+        in_memory:
+            memory:
+                users:
+                    TheKeeper:
+                        password: '%env(ADMIN_PASSWORD)%'
+                        roles: 'ROLE_ADMIN'
+                    TheCustomer:
+                        password: '%env(CUSTOMER_PASSWORD)%'
+                        roles: 'ROLE_CUSTOMER'
+
         app_user_provider:
             entity:
                 class: App\Entity\Holder
@@ -19,13 +35,20 @@ security:
             stateless: true
             anonymous: true
             json_login:
-                check_path:               /login_check
-                success_handler:          lexik_jwt_authentication.handler.authentication_success
-                failure_handler:          lexik_jwt_authentication.handler.authentication_failure
+                provider: chain_provider
+                check_path: /login_check
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
         api:
             pattern:   ^/.+
             stateless: true
             guard:
+                provider: chain_provider
                 authenticators:
                     - lexik_jwt_authentication.jwt_token_authenticator
+
+    role_hierarchy:
+        ROLE_CUSTOMER: ROLE_USER
+        ROLE_HOLDER: ROLE_USER
+        ROLE_ADMIN: ['ROLE_CUSTOMER', 'ROLE_HOLDER']

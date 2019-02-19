@@ -7,40 +7,66 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- * @ApiResource
+ * @ApiResource(
+ *     accessControl = "is_granted('ROLE_ADMIN')",
+ *     collectionOperations = {
+ *          "get" = {
+ *              "normalization_context" = {
+ *                  "groups" = {"Holder:read"}
+ *              }
+ *          },
+ *          "post" = {
+ *              "denormalization_context" = {
+ *                  "groups" = {"Holder:subscription"}
+ *              }
+ *          }
+ *     },
+ *     itemOperations={
+ *          "get" = {
+ *              "normalization_context" = {
+ *                  "groups" = {"Holder:read"}
+ *              },
+ *              "access_control" = "is_granted('ROLE_ADMIN') or object.getId() == user.getId()"
+ *          }
+ *     }
+ * )
  */
 class Holder implements UserInterface
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\Column(type="guid")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\Email(checkHost=true, checkMX=true)
+     * @Assert\Email
+     * @Groups({"Holder:subscription", "Holder:read"})
      */
     private $email;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(type="json", options={"default":"[]"})
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Groups("Holder:subscription")
      */
     private $password;
 
     /**
      * @ORM\OneToMany(targetEntity=Queue::class, mappedBy="holder")
+     * @Groups("Holder:read")
      */
     private $waitingLines;
 
@@ -49,7 +75,7 @@ class Holder implements UserInterface
         $this->waitingLines = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -80,8 +106,7 @@ class Holder implements UserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles[] = 'ROLE_HOLDER';
 
         return array_unique($roles);
     }

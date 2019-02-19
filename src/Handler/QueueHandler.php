@@ -19,7 +19,6 @@ final class QueueHandler implements MessageHandlerInterface
 
     public function __invoke(Queue $updatedStatus)
     {
-        dump($updatedStatus);
         $this->manager->merge($updatedStatus);
         $this->manager->flush();
     }

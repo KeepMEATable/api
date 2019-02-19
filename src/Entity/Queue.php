@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -13,15 +11,25 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity
  * @ApiResource(
- *     mercure=true,
- *     messenger=true,
- *     collectionOperations={
- *          "get",
- *          "post"
+ *     mercure = true,
+ *     messenger = true,
+ *     collectionOperations = {
+ *          "get" = { "access_control"="is_granted('ROLE_HOLDER')" },
+ *          "post" = {
+ *              "access_control"="is_granted('ROLE_CUSTOMER')"
+ *          }
  *      },
- *     itemOperations={"get"},
- *     normalizationContext={"groups"={"Queue:read"}},
- *     denormalizationContext={"groups"={"Queue:write"}},
+ *     itemOperations = {
+ *          "get" = {
+ *              "access_control"="is_granted('ROLE_CUSTOMER')"
+ *          }
+ *      },
+ *     normalizationContext = {
+ *          "groups" = {"Queue:read"}
+ *     },
+ *     denormalizationContext = {
+ *          "groups" = {"Queue:write"}
+ *     }
  * )
  */
 class Queue
@@ -32,7 +40,7 @@ class Queue
 
     /**
      * @Groups({"Queue:read", "Queue:write"})
-     * @ORM\Column(type="string", length=36)
+     * @ORM\Column(type="string", length=36, unique=true)
      * @ORM\Id
      */
     public $customerId;
@@ -51,7 +59,6 @@ class Queue
      * @ORM\Column(type="boolean", nullable=false,  options={"default": false})
      */
     public $ready = false;
-
     /**
      * @ORM\ManyToOne(targetEntity=Holder::class, inversedBy="waitingLines")
      */

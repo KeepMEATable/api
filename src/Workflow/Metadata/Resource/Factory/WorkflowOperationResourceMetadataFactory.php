@@ -34,6 +34,7 @@ final class WorkflowOperationResourceMetadataFactory implements ResourceMetadata
         $operations['state'] = [
             'method' => 'PATCH',
             '_path_suffix' => '/state',
+            'access_control' => 'is_granted("ROLE_USER")',
         ];
 
         return $resourceMetadata->withItemOperations($operations);
