@@ -24,3 +24,6 @@ api_platform:
             apiKey:
                 name: Authorization
                 type: header
+    collection:
+        pagination:
+            partial: true

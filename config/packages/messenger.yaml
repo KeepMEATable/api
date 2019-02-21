@@ -6,7 +6,6 @@ framework:
 
         routing:
             # Route your messages to the transports
+            'App\Entity\ResetPasswordRequest': amqp
             'Symfony\Component\Mercure\Update': amqp
-            # does not work anymore with the next line...
-            #'App\Entity\Queue': amqp
 
