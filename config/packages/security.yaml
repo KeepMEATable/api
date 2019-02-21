@@ -40,6 +40,11 @@ security:
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
+        forgotPassword:
+            pattern: ^/reset
+            stateless: true
+            anonymous: true
+
         api:
             pattern:   ^/.+
             stateless: true
