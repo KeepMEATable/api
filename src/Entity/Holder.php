@@ -60,9 +60,13 @@ class Holder implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Groups("Holder:subscription")
      */
     private $password;
+
+    /**
+     * @Groups("Holder:subscription")
+     */
+    private $plainPassword;
 
     /**
      * @ORM\OneToMany(targetEntity=Queue::class, mappedBy="holder")
@@ -129,6 +133,16 @@ class Holder implements UserInterface
         $this->password = $password;
     }
 
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(string $plainPassword): void
+    {
+        $this->plainPassword = $plainPassword;
+    }
+
     /**
      * @see UserInterface
      */
@@ -137,7 +151,10 @@ class Holder implements UserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials(): void{}
+    public function eraseCredentials(): void
+    {
+        $this->plainPassword = null;
+    }
 
     /**
      * @return Collection|Queue[]

@@ -34,6 +34,10 @@ class ResetPasswordRequestTransformer implements DataTransformerInterface
 
     public function supportsTransformation($object, string $to, array $context = []): bool
     {
-        return ResetPasswordRequest::class === $to && $object instanceof ResetPassword;
+        if (null === ($context['collection_operation_name'] ?? null)) {
+            return false;
+        }
+
+        return ResetPasswordRequest::class === $to && ($context['input']['class'] ?? null) === ResetPassword::class;
     }
 }
