@@ -40,21 +40,27 @@ class ResetPasswordRequestHandler implements MessageHandlerInterface
 
     private function createToken(ResetPasswordRequest $passwordToken): void
     {
-        $passwordToken->setToken((string) Uuid::uuid4());
-
-        $passwordToken->setExpiresAt(new \DateTime('1 day'));
         $em = $this->registry->getEntityManagerForClass(ResetPasswordRequest::class);
 
         if (null === $em) {
             throw new \RuntimeException('Cannot persist reset password request');
         }
 
+        $user = $passwordToken->getUser();
+
+        if (null === $user) {
+            throw new \RuntimeException('Cannot find user.');
+        }
+
+        $passwordToken->setToken((Uuid::uuid4())->toString());
+        $passwordToken->setExpiresAt(new \DateTime('1 day'));
+
         $em->persist($passwordToken);
         $em->flush();
 
         $message = (new \Swift_Message('Forgot Password'))
             ->setFrom('no-reply@keepmeatable.com')
-            ->setTo($passwordToken->getUser()->getEmail())
+            ->setTo($user->getEmail())
             ->setBody(<<<HTML
 resetPassword by clicking here <a href="/forgot_password/{$passwordToken->getToken()}"></a>
 HTML
@@ -66,14 +72,26 @@ HTML
 
     private function updatePassword(ResetPasswordRequest $passwordToken): void
     {
-        $passwordToken->getUser()->setPassword($passwordToken->getNewPassword());
         $em = $this->registry->getEntityManagerForClass(ResetPasswordRequest::class);
 
         if (null === $em) {
-            throw new \RuntimeException('Cannot persist reset password request');
+            throw new \RuntimeException('Cannot reset password.');
         }
 
+        $user = $passwordToken->getUser();
+
+        if (null === $user) {
+            throw new \RuntimeException('Cannot find user.');
+        }
+
+        $newPassword = $passwordToken->getNewPassword();
+        if (!\is_string($newPassword)) {
+            throw new \LogicException('Cannot set a null password.');
+        }
+
+        $user->setPassword($newPassword);
         $passwordToken = $em->merge($passwordToken);
+
         $em->remove($passwordToken);
         $em->flush();
 

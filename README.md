@@ -1,5 +1,8 @@
 # API
 
-The API will be here.
+# contributing
 
-Refer to the [Getting Started Guide](https://api-platform.com/docs/distribution) for more information.
+```shell
+$ vendor/bin/php-cs-fixer fix
+$ vendor/bin/phpstan -l6 analyze src
+```

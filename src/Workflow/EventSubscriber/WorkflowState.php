@@ -53,7 +53,7 @@ final class WorkflowState implements EventSubscriberInterface
             return;
         }
 
-        $requestContent = json_decode($request->getContent());
+        $requestContent = json_decode((string) $request->getContent());
 
         if (!isset($requestContent->state) || !($state = $requestContent->state)) {
             throw new BadRequestHttpException('State is required.');

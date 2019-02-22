@@ -37,3 +37,7 @@ services:
     App\Doctrine\Extensions\HolderWaitingLineFilter:
         tags:
             - {name: 'api_platform.doctrine.orm.query_extension.collection', priority: 9}
+
+    App\EventSubscriber\PasswordEncoderSubscriber:
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }

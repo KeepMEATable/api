@@ -25,23 +25,19 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ApiResource(
  *     accessControl="is_granted('ROLE_ADMIN')",
+ *     normalizationContext={
+ *         "groups"={"Holder:read"}
+ *     },
  *     collectionOperations={
- *         "get"={
- *             "normalization_context"={
- *                 "groups"={"Holder:read"}
- *             }
- *         },
+ *         "get",
  *         "post"={
  *             "denormalization_context"={
  *                 "groups"={"Holder:subscription"}
- *             }
+ *             },
  *         }
  *     },
  *     itemOperations={
  *         "get"={
- *             "normalization_context"={
- *                 "groups"={"Holder:read"}
- *             },
  *             "access_control"="is_granted('ROLE_ADMIN') or object.getId() == user.getId()"
  *         }
  *     }
@@ -158,8 +154,9 @@ class Holder implements UserInterface
     /**
      * @see UserInterface
      */
-    public function getSalt(): void
+    public function getSalt(): ?string
     {
+        return null;
     }
 
     /**

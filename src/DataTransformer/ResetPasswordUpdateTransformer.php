@@ -30,6 +30,10 @@ class ResetPasswordUpdateTransformer implements DataTransformerInterface
 
     public function transform($object, string $to, array $context = [])
     {
+        if (!$object instanceof ResetPassword) {
+            throw new \LogicException(sprintf('Instance of ResetPassword expected, but got %s', \get_class($object)));
+        }
+
         /** @var ResetPasswordRequest $resetPasswordRequest */
         $resetPasswordRequest = $context[AbstractItemNormalizer::OBJECT_TO_POPULATE];
         $user = $resetPasswordRequest->getUser();

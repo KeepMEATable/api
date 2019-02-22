@@ -30,6 +30,10 @@ class ResetPasswordRequestTransformer implements DataTransformerInterface
 
     public function transform($object, string $to, array $context = [])
     {
+        if (!$object instanceof ResetPassword) {
+            throw new \LogicException(sprintf('Instance of ResetPassword expected, but got %s', \get_class($object)));
+        }
+
         $holder = $this->holderRepository->findOneBy(['email' => $object->email]);
 
         if (null === $holder) {

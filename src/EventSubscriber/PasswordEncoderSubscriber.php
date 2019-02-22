@@ -41,10 +41,11 @@ class PasswordEncoderSubscriber implements EventSubscriber
         $entity = $args->getObject();
         $plainPassword = $entity->getPlainPassword();
 
-        if (!$entity instanceof Holder && null !== $plainPassword) {
+        if (!$entity instanceof Holder || null === $plainPassword) {
             return;
         }
 
         $entity->setPassword($this->passwordEncoder->encodePassword($entity, $plainPassword));
+        $entity->eraseCredentials();
     }
 }
