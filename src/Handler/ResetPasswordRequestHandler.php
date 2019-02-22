@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the "KeepMeATable" project.
+ *
+ * (c) Grégoire Hébert <gregoire@les-tilleuls.coop>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 declare(strict_types=1);
 
 namespace App\Handler;
@@ -20,7 +29,7 @@ class ResetPasswordRequestHandler implements MessageHandlerInterface
         $this->registry = $registry;
     }
 
-    public function __invoke(ResetPasswordRequest $passwordToken)
+    public function __invoke(ResetPasswordRequest $passwordToken): void
     {
         if (null === $passwordToken->getToken()) {
             $this->createToken($passwordToken);
@@ -29,7 +38,7 @@ class ResetPasswordRequestHandler implements MessageHandlerInterface
         }
     }
 
-    private function createToken(ResetPasswordRequest $passwordToken)
+    private function createToken(ResetPasswordRequest $passwordToken): void
     {
         $passwordToken->setToken((string) Uuid::uuid4());
 
@@ -55,7 +64,7 @@ HTML
         $this->mailer->send($message);
     }
 
-    private function updatePassword(ResetPasswordRequest $passwordToken)
+    private function updatePassword(ResetPasswordRequest $passwordToken): void
     {
         $passwordToken->getUser()->setPassword($passwordToken->getNewPassword());
         $em = $this->registry->getEntityManagerForClass(ResetPasswordRequest::class);

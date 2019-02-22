@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of the "KeepMeATable" project.
+ *
+ * (c) Grégoire Hébert <gregoire@les-tilleuls.coop>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
@@ -13,26 +24,26 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ApiResource(
- *     accessControl = "is_granted('ROLE_ADMIN')",
- *     collectionOperations = {
- *          "get" = {
- *              "normalization_context" = {
- *                  "groups" = {"Holder:read"}
- *              }
- *          },
- *          "post" = {
- *              "denormalization_context" = {
- *                  "groups" = {"Holder:subscription"}
- *              }
- *          }
+ *     accessControl="is_granted('ROLE_ADMIN')",
+ *     collectionOperations={
+ *         "get"={
+ *             "normalization_context"={
+ *                 "groups"={"Holder:read"}
+ *             }
+ *         },
+ *         "post"={
+ *             "denormalization_context"={
+ *                 "groups"={"Holder:subscription"}
+ *             }
+ *         }
  *     },
  *     itemOperations={
- *          "get" = {
- *              "normalization_context" = {
- *                  "groups" = {"Holder:read"}
- *              },
- *              "access_control" = "is_granted('ROLE_ADMIN') or object.getId() == user.getId()"
- *          }
+ *         "get"={
+ *             "normalization_context"={
+ *                 "groups"={"Holder:read"}
+ *             },
+ *             "access_control"="is_granted('ROLE_ADMIN') or object.getId() == user.getId()"
+ *         }
  *     }
  * )
  */
@@ -53,7 +64,7 @@ class Holder implements UserInterface
     private $email;
 
     /**
-     * @ORM\Column(type="json", options={"default":"[]"})
+     * @ORM\Column(type="json", options={"default"="[]"})
      */
     private $roles = [];
 
@@ -147,7 +158,9 @@ class Holder implements UserInterface
     /**
      * @see UserInterface
      */
-    public function getSalt(){}
+    public function getSalt(): void
+    {
+    }
 
     /**
      * @see UserInterface

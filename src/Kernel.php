@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of the "KeepMeATable" project.
+ *
+ * (c) Grégoire Hébert <gregoire@les-tilleuls.coop>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
 namespace App;
 
 use App\Workflow\DependencyInjection\Compiler\WorkflowPass;
@@ -26,7 +37,7 @@ class Kernel extends BaseKernel
         }
     }
 
-    protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
+    protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
         $container->addResource(new FileResource($this->getProjectDir().'/config/bundles.php'));
         $container->setParameter('container.dumper.inline_class_loader', true);
@@ -38,7 +49,7 @@ class Kernel extends BaseKernel
         $loader->load($confDir.'/{services}_'.$this->environment.self::CONFIG_EXTS, 'glob');
     }
 
-    protected function configureRoutes(RouteCollectionBuilder $routes)
+    protected function configureRoutes(RouteCollectionBuilder $routes): void
     {
         $confDir = $this->getProjectDir().'/config';
 
@@ -47,7 +58,7 @@ class Kernel extends BaseKernel
         $routes->import($confDir.'/{routes}'.self::CONFIG_EXTS, '/', 'glob');
     }
 
-    protected function build(ContainerBuilder $container)
+    protected function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new WorkflowPass());
     }

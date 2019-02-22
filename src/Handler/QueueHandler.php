@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the "KeepMeATable" project.
+ *
+ * (c) Grégoire Hébert <gregoire@les-tilleuls.coop>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 declare(strict_types=1);
 
 namespace App\Handler;
@@ -17,7 +26,7 @@ final class QueueHandler implements MessageHandlerInterface
         $this->manager = $registry->getManagerForClass(Queue::class);
     }
 
-    public function __invoke(Queue $updatedStatus)
+    public function __invoke(Queue $updatedStatus): void
     {
         $this->manager->merge($updatedStatus);
         $this->manager->flush();

@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the "KeepMeATable" project.
+ *
+ * (c) Grégoire Hébert <gregoire@les-tilleuls.coop>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 declare(strict_types=1);
 
 namespace App\DataTransformer;
@@ -18,9 +27,10 @@ class ResetPasswordRequestTransformer implements DataTransformerInterface
     {
         $this->holderRepository = $holderRepository;
     }
+
     public function transform($object, string $to, array $context = [])
     {
-        $holder = $this->holderRepository->findOneBy(['email'=>$object->email]);
+        $holder = $this->holderRepository->findOneBy(['email' => $object->email]);
 
         if (null === $holder) {
             throw new NotFoundHttpException('This email is not registered, is there a typo?');
@@ -38,6 +48,6 @@ class ResetPasswordRequestTransformer implements DataTransformerInterface
             return false;
         }
 
-        return ResetPasswordRequest::class === $to && ($context['input']['class'] ?? null) === ResetPassword::class;
+        return ResetPasswordRequest::class === $to && ResetPassword::class === ($context['input']['class'] ?? null);
     }
 }

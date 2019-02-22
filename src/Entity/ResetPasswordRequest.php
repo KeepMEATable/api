@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the "KeepMeATable" project.
+ *
+ * (c) Grégoire Hébert <gregoire@les-tilleuls.coop>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 declare(strict_types=1);
 
 namespace App\Entity;
@@ -13,26 +22,26 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ApiResource(
  *     messenger=true,
- *     collectionOperations = {
- *          "get" = {
- *              "access_control" = "is_granted('ROLE_ADMIN')"
- *          },
- *          "post" = {
- *              "status" = 202,
- *              "access_control" = "is_granted('IS_AUTHENTICATED_ANONYMOUSLY')",
- *              "denormalization_context" = { "groups" = {"ResetPasswordRequest:post"} }
- *          }
+ *     collectionOperations={
+ *         "get"={
+ *             "access_control"="is_granted('ROLE_ADMIN')"
+ *         },
+ *         "post"={
+ *             "status"=202,
+ *             "access_control"="is_granted('IS_AUTHENTICATED_ANONYMOUSLY')",
+ *             "denormalization_context"={ "groups"={"ResetPasswordRequest:post"} }
+ *         }
  *     },
- *     itemOperations = {
- *          "get" = {
- *              "access_control" = "is_granted('ROLE_ADMIN')"
- *          },
- *          "put" = {
- *              "status" = 202,
- *              "path" = "/reset_password/{id}",
- *              "access_control" = "is_granted('IS_AUTHENTICATED_ANONYMOUSLY')",
- *              "denormalization_context" = { "groups" = {"ResetPasswordRequest:put"} }
- *          }
+ *     itemOperations={
+ *         "get"={
+ *             "access_control"="is_granted('ROLE_ADMIN')"
+ *         },
+ *         "put"={
+ *             "status"=202,
+ *             "path"="/reset_password/{id}",
+ *             "access_control"="is_granted('IS_AUTHENTICATED_ANONYMOUSLY')",
+ *             "denormalization_context"={ "groups"={"ResetPasswordRequest:put"} }
+ *         }
  *     },
  *     input=ResetPassword::class,
  *     output=false

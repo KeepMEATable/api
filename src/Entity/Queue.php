@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the "KeepMeATable" project.
+ *
+ * (c) Grégoire Hébert <gregoire@les-tilleuls.coop>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 declare(strict_types=1);
 
 namespace App\Entity;
@@ -11,24 +20,24 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity
  * @ApiResource(
- *     mercure = true,
- *     messenger = true,
- *     collectionOperations = {
- *          "get" = { "access_control"="is_granted('ROLE_HOLDER')" },
- *          "post" = {
- *              "access_control"="is_granted('ROLE_CUSTOMER')"
- *          }
- *      },
- *     itemOperations = {
- *          "get" = {
- *              "access_control"="is_granted('ROLE_CUSTOMER')"
- *          }
- *      },
- *     normalizationContext = {
- *          "groups" = {"Queue:read"}
+ *     mercure=true,
+ *     messenger=true,
+ *     collectionOperations={
+ *         "get"={ "access_control"="is_granted('ROLE_HOLDER')" },
+ *         "post"={
+ *             "access_control"="is_granted('ROLE_CUSTOMER')"
+ *         }
  *     },
- *     denormalizationContext = {
- *          "groups" = {"Queue:write"}
+ *     itemOperations={
+ *         "get"={
+ *             "access_control"="is_granted('ROLE_CUSTOMER')"
+ *         }
+ *     },
+ *     normalizationContext={
+ *         "groups"={"Queue:read"}
+ *     },
+ *     denormalizationContext={
+ *         "groups"={"Queue:write"}
  *     }
  * )
  */
@@ -46,17 +55,17 @@ class Queue
     public $customerId;
     /**
      * @Groups("Queue:read")
-     * @ORM\Column(type="boolean", nullable=false, options={"default": false})
+     * @ORM\Column(type="boolean", nullable=false, options={"default"=false})
      */
     public $started = true;
     /**
      * @Groups("Queue:read")
-     * @ORM\Column(type="boolean", nullable=false,  options={"default": false})
+     * @ORM\Column(type="boolean", nullable=false,  options={"default"=false})
      */
     public $waiting = false;
     /**
      * @Groups("Queue:read")
-     * @ORM\Column(type="boolean", nullable=false,  options={"default": false})
+     * @ORM\Column(type="boolean", nullable=false,  options={"default"=false})
      */
     public $ready = false;
     /**
@@ -78,10 +87,10 @@ class Queue
         }
     }
 
-    public function setMarking(string $state) :void
+    public function setMarking(string $state): void
     {
         switch ($state) {
-            case self::WORKFLOW_MARKING_STARTED;
+            case self::WORKFLOW_MARKING_STARTED:
                 $this->started = true;
                 $this->waiting = $this->ready = false;
                 break;
@@ -105,6 +114,5 @@ class Queue
 
     public function setHolder(?Holder $holder): void
     {
-        $this->holder = $holder;
     }
 }

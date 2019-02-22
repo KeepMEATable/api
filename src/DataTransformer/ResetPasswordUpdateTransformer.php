@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the "KeepMeATable" project.
+ *
+ * (c) Grégoire Hébert <gregoire@les-tilleuls.coop>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 declare(strict_types=1);
 
 namespace App\DataTransformer;
@@ -8,18 +17,15 @@ use ApiPlatform\Core\DataTransformer\DataTransformerInterface;
 use ApiPlatform\Core\Serializer\AbstractItemNormalizer;
 use App\DTO\ResetPassword;
 use App\Entity\ResetPasswordRequest;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class ResetPasswordUpdateTransformer implements DataTransformerInterface
 {
     private $passwordEncoder;
-    private $registry;
 
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder, RegistryInterface $registry)
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->passwordEncoder = $passwordEncoder;
-        $this->registry = $registry;
     }
 
     public function transform($object, string $to, array $context = [])
@@ -41,6 +47,6 @@ class ResetPasswordUpdateTransformer implements DataTransformerInterface
             return false;
         }
 
-        return ResetPasswordRequest::class === $to && ($context['input']['class'] ?? null) === ResetPassword::class;
+        return ResetPasswordRequest::class === $to && ResetPassword::class === ($context['input']['class'] ?? null);
     }
 }

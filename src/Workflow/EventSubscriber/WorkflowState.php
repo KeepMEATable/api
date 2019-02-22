@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the "KeepMeATable" project.
+ *
+ * (c) Grégoire Hébert <gregoire@les-tilleuls.coop>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 declare(strict_types=1);
 
 namespace App\Workflow\EventSubscriber;
@@ -11,11 +20,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Workflow\Registry;
 
 final class WorkflowState implements EventSubscriberInterface
@@ -30,11 +37,11 @@ final class WorkflowState implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::REQUEST => [['applyState', EventPriorities::POST_DESERIALIZE]]
+            KernelEvents::REQUEST => [['applyState', EventPriorities::POST_DESERIALIZE]],
         ];
     }
 
-    public function applyState(GetResponseEvent $event)
+    public function applyState(GetResponseEvent $event): void
     {
         $request = $event->getRequest();
 
@@ -57,7 +64,7 @@ final class WorkflowState implements EventSubscriberInterface
 
         if (!$workflow->can($class, $state)) {
             throw new ValidationException(new ConstraintViolationList([
-                new ConstraintViolation(sprintf("Transition '%s' cannot be applied.", $state), '', [], $class->getMarking(), 'marking', $state)
+                new ConstraintViolation(sprintf("Transition '%s' cannot be applied.", $state), '', [], $class->getMarking(), 'marking', $state),
             ]));
         }
 
