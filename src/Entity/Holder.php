@@ -77,7 +77,7 @@ class Holder implements UserInterface
     private $plainPassword;
 
     /**
-     * @ORM\OneToMany(targetEntity=Queue::class, mappedBy="holder")
+     * @ORM\OneToMany(targetEntity=WaitingLine::class, mappedBy="holder")
      * @Groups("Holder:read")
      */
     private $waitingLines;
@@ -168,14 +168,14 @@ class Holder implements UserInterface
     }
 
     /**
-     * @return Collection|Queue[]
+     * @return Collection|WaitingLine[]
      */
     public function getWaitingLines(): Collection
     {
         return $this->waitingLines;
     }
 
-    public function addWaitingLine(Queue $waitingLine): void
+    public function addWaitingLine(WaitingLine $waitingLine): void
     {
         if (!$this->waitingLines->contains($waitingLine)) {
             $this->waitingLines[] = $waitingLine;
@@ -183,7 +183,7 @@ class Holder implements UserInterface
         }
     }
 
-    public function removeWaitingLine(Queue $waitingLine): void
+    public function removeWaitingLine(WaitingLine $waitingLine): void
     {
         if ($this->waitingLines->contains($waitingLine)) {
             $this->waitingLines->removeElement($waitingLine);

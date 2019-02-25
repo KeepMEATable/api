@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
-use App\Entity\Queue;
+use App\Entity\WaitingLine;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
@@ -23,10 +23,10 @@ final class QueueHandler implements MessageHandlerInterface
 
     public function __construct(ManagerRegistry $registry)
     {
-        $this->manager = $registry->getManagerForClass(Queue::class);
+        $this->manager = $registry->getManagerForClass(WaitingLine::class);
     }
 
-    public function __invoke(Queue $updatedStatus): void
+    public function __invoke(WaitingLine $updatedStatus): void
     {
         $this->manager->merge($updatedStatus);
         $this->manager->flush();

@@ -34,37 +34,37 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *         }
  *     },
  *     normalizationContext={
- *         "groups"={"Queue:read"}
+ *         "groups"={"WaitingLine:read"}
  *     },
  *     denormalizationContext={
- *         "groups"={"Queue:write"}
+ *         "groups"={"WaitingLine:write"}
  *     }
  * )
  */
-class Queue
+class WaitingLine
 {
     private const WORKFLOW_MARKING_STARTED = 'started';
     private const WORKFLOW_MARKING_WAITING = 'waiting';
     private const WORKFLOW_MARKING_READY = 'ready';
 
     /**
-     * @Groups({"Queue:read", "Queue:write"})
+     * @Groups({"WaitingLine:read", "WaitingLine:write"})
      * @ORM\Column(type="string", length=36, unique=true)
      * @ORM\Id
      */
     public $customerId;
     /**
-     * @Groups("Queue:read")
+     * @Groups("WaitingLine:read")
      * @ORM\Column(type="boolean", nullable=false, options={"default"=false})
      */
     public $started = true;
     /**
-     * @Groups("Queue:read")
+     * @Groups("WaitingLine:read")
      * @ORM\Column(type="boolean", nullable=false,  options={"default"=false})
      */
     public $waiting = false;
     /**
-     * @Groups("Queue:read")
+     * @Groups("WaitingLine:read")
      * @ORM\Column(type="boolean", nullable=false,  options={"default"=false})
      */
     public $ready = false;

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace App\Workflow\EventSubscriber;
 
 use App\Entity\Holder;
-use App\Entity\Queue;
+use App\Entity\WaitingLine;
 use App\Workflow\Exceptions\MissingUserException;
 use App\Workflow\Exceptions\NotHandledUserException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -34,7 +34,7 @@ class Ownership implements EventSubscriberInterface
     {
         $queue = $event->getSubject();
 
-        if (!$queue instanceof Queue) {
+        if (!$queue instanceof WaitingLine) {
             return;
         }
 
@@ -45,7 +45,7 @@ class Ownership implements EventSubscriberInterface
     {
         $queue = $event->getSubject();
 
-        if (!$queue instanceof Queue) {
+        if (!$queue instanceof WaitingLine) {
             return;
         }
 

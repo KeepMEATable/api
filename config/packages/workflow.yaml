@@ -5,7 +5,7 @@ framework:
             audit_trail:
                 enabled: true
             supports:
-                - App\Entity\Queue
+                - App\Entity\WaitingLine
             initial_place: started
             places:
                 - started
