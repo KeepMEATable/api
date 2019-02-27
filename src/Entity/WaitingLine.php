@@ -114,5 +114,6 @@ class WaitingLine
 
     public function setHolder(?Holder $holder): void
     {
+        $this->holder = $holder;
     }
 }

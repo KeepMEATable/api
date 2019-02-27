@@ -17,7 +17,7 @@ use App\Entity\WaitingLine;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
-final class QueueHandler implements MessageHandlerInterface
+final class WaitingLineHandler implements MessageHandlerInterface
 {
     private $manager;
 
