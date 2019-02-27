@@ -44,6 +44,22 @@ final class WorkflowOperationResourceMetadataFactory implements ResourceMetadata
             'method' => 'PATCH',
             '_path_suffix' => '/state',
             'access_control' => 'is_granted("ROLE_USER")',
+            'swagger_context' => [
+                'summary' => 'Update the state.',
+                'parameters' =>[[
+                    'name' => 'waitingLine',
+                    'in' => 'body',
+                    'schema' => [
+                        'type' => 'object',
+                        'properties' => [
+                            'state' => ['type' => 'string']
+                        ],
+                    ],
+                    'example' => [
+                       'state' => 'waiting'
+                    ]
+                ]]
+            ]
         ];
 
         return $resourceMetadata->withItemOperations($operations);
