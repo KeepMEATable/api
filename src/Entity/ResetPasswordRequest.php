@@ -23,9 +23,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @ApiResource(
  *     messenger=true,
  *     collectionOperations={
- *         "get"={
- *             "access_control"="is_granted('ROLE_ADMIN')"
- *         },
  *         "post"={
  *             "status"=202,
  *             "access_control"="is_granted('IS_AUTHENTICATED_ANONYMOUSLY')",
@@ -33,9 +30,6 @@ use Doctrine\ORM\Mapping as ORM;
  *         }
  *     },
  *     itemOperations={
- *         "get"={
- *             "access_control"="is_granted('ROLE_ADMIN')"
- *         },
  *         "put"={
  *             "status"=202,
  *             "path"="/reset_password/{id}",
