@@ -24,27 +24,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ApiResource(
- *     accessControl="is_granted('ROLE_ADMIN')",
- *     normalizationContext={
- *         "groups"={"Holder:read"}
- *     },
- *     collectionOperations={
- *         "get",
- *         "post"={
- *             "denormalization_context"={
- *                 "groups"={"Holder:subscription"}
- *             },
- *         }
- *     },
  *     itemOperations={
  *         "get"={
- *             "access_control"="is_granted('ROLE_ADMIN') or object.getId() == user.getId()"
+ *              "access_control"="object.getId() == user.getId()",
+ *              "normalization_context" = {"groups"={"Holder:read"}}
  *         }
  *     }
  * )
  */
 class Holder implements UserInterface
 {
+    public const STATUS_ACTIVE = 'active';
+    public const STATUS_INACTIVE = 'inactive';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="UUID")
@@ -54,10 +46,9 @@ class Holder implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\Email
-     * @Groups({"Holder:subscription", "Holder:read"})
+     * @Groups({"Holder:read"})
      */
-    private $email;
+    private $name;
 
     /**
      * @ORM\Column(type="json", options={"default"="[]"})
@@ -67,20 +58,34 @@ class Holder implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Groups("Holder:subscription")
      */
     private $password;
-
-    /**
-     * @Groups("Holder:subscription")
-     */
-    private $plainPassword;
 
     /**
      * @ORM\OneToMany(targetEntity=WaitingLine::class, mappedBy="holder")
      * @Groups("Holder:read")
      */
     private $waitingLines;
+
+    /**
+     * @var \DateTime
+     * @Assert\DateTime
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updatedAt;
+
+    /**
+     * @var \DateTime
+     * @Assert\DateTime
+     * @ORM\Column(type="datetime", options={"default" = "CURRENT_TIMESTAMP"})
+     */
+    private $createdAt;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", options={"default"=Holder::STATUS_ACTIVE})
+     */
+    private $status;
 
     public function __construct()
     {
@@ -92,14 +97,14 @@ class Holder implements UserInterface
         return $this->id;
     }
 
-    public function getEmail(): ?string
+    public function getName(): ?string
     {
-        return $this->email;
+        return $this->name;
     }
 
-    public function setEmail(string $email): void
+    public function setName(string $name): void
     {
-        $this->email = $email;
+        $this->name = $name;
     }
 
     /**
@@ -109,7 +114,7 @@ class Holder implements UserInterface
      */
     public function getUsername(): string
     {
-        return $this->email;
+        return $this->name;
     }
 
     /**
@@ -191,5 +196,57 @@ class Holder implements UserInterface
                 $waitingLine->setHolder(null);
             }
         }
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt(): \DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param \DateTime $updatedAt
+     */
+    public function setUpdatedAt(\DateTime $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param \DateTime $createdAt
+     */
+    public function setCreatedAt(\DateTime $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string $status
+     */
+    public function setStatus(string $status): void
+    {
+        if (!in_array($status, array(self::STATUS_ACTIVE, self::STATUS_INACTIVE), true)) {
+            throw new \InvalidArgumentException('Invalid status');
+        }
+
+        $this->status = $status;
     }
 }
