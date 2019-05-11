@@ -70,8 +70,15 @@ class WaitingLine
     public $ready = false;
     /**
      * @ORM\ManyToOne(targetEntity=Holder::class, inversedBy="waitingLines")
+     * @Groups("WaitingLine:read")
      */
     private $holder;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     * @Groups("WaitingLine:read")
+     */
+    private $awaitStartedAt;
 
     public function getMarking(): string
     {
@@ -115,5 +122,15 @@ class WaitingLine
     public function setHolder(?Holder $holder): void
     {
         $this->holder = $holder;
+    }
+
+    public function getAwaitStartedAt(): ?\DateTime
+    {
+        return $this->awaitStartedAt;
+    }
+
+    public function setAwaitStartedAt(?\DateTime $awaitStartedAt): void
+    {
+        $this->awaitStartedAt = $awaitStartedAt;
     }
 }

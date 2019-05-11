@@ -46,7 +46,7 @@ class Holder implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"Holder:read"})
+     * @Groups({"Holder:read", "WaitingLine:read"})
      */
     private $name;
 
@@ -86,6 +86,13 @@ class Holder implements UserInterface
      * @ORM\Column(type="string", options={"default"=Holder::STATUS_ACTIVE})
      */
     private $status;
+
+    /**
+     * @var int time in seconds
+     * @ORM\Column(type="integer", options={"default"=1800})
+     * @Groups({"WaitingLine:read"})
+     */
+    private $estimatedDelay = 1800;
 
     public function __construct()
     {
@@ -248,5 +255,15 @@ class Holder implements UserInterface
         }
 
         $this->status = $status;
+    }
+
+    public function getEstimatedDelay(): int
+    {
+        return $this->estimatedDelay;
+    }
+
+    public function setEstimatedDelay(int $estimatedDelay): void
+    {
+        $this->estimatedDelay = $estimatedDelay;
     }
 }

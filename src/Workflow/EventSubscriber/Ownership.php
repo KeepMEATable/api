@@ -35,26 +35,25 @@ class Ownership implements EventSubscriberInterface
         $waitingLine = $event->getSubject();
 
         if (!$waitingLine instanceof WaitingLine) {
-            dump('not a waitingLine');
             return;
         }
 
         $user = $this->getUser();
-        dump('set', $user, $waitingLine);
 
         $waitingLine->setHolder($user);
+        $waitingLine->setAwaitStartedAt(new \DateTime());
     }
 
     public function removeOwnership(Event $event): void
     {
         $waitingLine = $event->getSubject();
-        dump('remove');
 
         if (!$waitingLine instanceof WaitingLine) {
             return;
         }
 
         $waitingLine->setHolder(null);
+        $waitingLine->setAwaitStartedAt(null);
     }
 
     public static function getSubscribedEvents(): array
@@ -68,7 +67,6 @@ class Ownership implements EventSubscriberInterface
     private function getUser(): Holder
     {
         $token = $this->tokenStorage->getToken();
-        dump($token);
 
         if (null === $token) {
             throw new MissingUserException('Trying to set ownership to an unknown user.');
@@ -76,12 +74,9 @@ class Ownership implements EventSubscriberInterface
 
         $user = $token->getUser();
 
-        dump($user);
         if (!$user instanceof Holder) {
             throw new NotHandledUserException('This type of user cannot be set as owner.');
         }
-
-        dump('user => ', $user);
 
         return $user;
     }

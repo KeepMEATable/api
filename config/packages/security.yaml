@@ -8,7 +8,7 @@ security:
     providers:
         chain_provider:
             chain:
-                providers: [app_user_provider, in_memory]
+                providers: [in_memory, app_user_provider]
 
         in_memory:
             memory:

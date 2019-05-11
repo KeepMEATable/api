@@ -15,11 +15,7 @@ class JWTTokenAuthenticator extends BaseAuthenticator
     {
         $user = parent::getUser($preAuthToken, $userProvider);
 
-        if (!$user instanceof Holder) {
-            throw new \LogicException('bad user');
-        }
-
-        if (Holder::STATUS_INACTIVE ===  $user->getStatus()) {
+        if ($user instanceof Holder && Holder::STATUS_INACTIVE === $user->getStatus()) {
             throw new PaymentRequiredException();
         }
 
