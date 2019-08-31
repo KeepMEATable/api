@@ -23,15 +23,18 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     mercure=true,
  *     messenger=true,
  *     collectionOperations={
- *         "get"={ "access_control"="is_granted('ROLE_HOLDER')" },
- *         "post"={
- *             "access_control"="is_granted('ROLE_CUSTOMER')"
- *         }
+ *          "get"={ "access_control"="is_granted('ROLE_HOLDER')" },
+ *          "post"={
+ *              "access_control"="is_granted('ROLE_CUSTOMER')"
+ *          }
  *     },
  *     itemOperations={
- *         "get"={
- *             "access_control"="is_granted('ROLE_CUSTOMER')"
- *         }
+ *          "get"={
+ *              "access_control"="is_granted('ROLE_CUSTOMER')"
+ *          },
+ *          "put"={
+ *              "access_control"="is_granted('ROLE_CUSTOMER')"
+ *          }
  *     },
  *     normalizationContext={
  *         "groups"={"WaitingLine:read"}
@@ -79,6 +82,12 @@ class WaitingLine
      * @Groups("WaitingLine:read")
      */
     private $awaitStartedAt;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     * @Groups({"WaitingLine:read", "WaitingLine:write"})
+     */
+    private $expoToken;
 
     public function getMarking(): string
     {
@@ -132,5 +141,15 @@ class WaitingLine
     public function setAwaitStartedAt(?\DateTime $awaitStartedAt): void
     {
         $this->awaitStartedAt = $awaitStartedAt;
+    }
+
+    public function getExpoToken(): ?string
+    {
+        return $this->expoToken;
+    }
+
+    public function setExpoToken(string $expoToken): void
+    {
+        $this->expoToken = $expoToken;
     }
 }
